@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 app.use(express.json());
 
 // Importation des routes
+const uri = process.env.MONGODB_URI;
 const reportsRoutes = require('./routes/reports');
 const uploadsRoutes = require('./routes/uploads');
 const usersRoutes = require('./routes/users');
@@ -26,13 +28,15 @@ app.get('/', (req, res) => {
 // Branchement des routes d’authentification
 app.use('/auth', authRoutes);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur http://localhost:${PORT}`);
 });
 // Connexion MongoDB
 
-mongoose.connect('mongodb+srv://admin:1234@cluster0.czuhmsl.mongodb.net/student_teacher?retryWrites=true&w=majority&appName=Cluster0', {
-})
+mongoose.connect(uri)
 .then(() => console.log('Connexion MongoDB réussie !'))
 .catch((err) => console.error('Erreur MongoDB :', err));
+
+
+// mongodb+srv://admin:1234@cluster0.czuhmsl.mongodb.net/student_teacher?retryWrites=true&w=majority&appName=Cluster0
